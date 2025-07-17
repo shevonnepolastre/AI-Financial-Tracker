@@ -6,7 +6,7 @@ AI-powered personal finance tracker that connects to Plaid, stores transactions 
 
 This project is my final submission for [CS50x](https://cs50.harvard.edu/x/), Harvard's Introduction to Computer Science. The goal is to build a practical financial assistant that combines real-time data, automation, and AI to improve how users interact with their finances.  After submission, I will continue building on top of it for the AI-102 certification exam. 
 
-### 🌟 Core Features
+### Core Features
 - **Plaid Integration** – Securely connect to bank accounts and retrieve recent transactions
 - **Notion Sync** – Automatically store transaction data in a structured Notion database
 - **AI Insights** – Use GPT to answer questions like:
