@@ -16,11 +16,12 @@ This project is my final submission for [CS50x](https://cs50.harvard.edu/x/), Ha
 
 ## Tech Stack
 
-- **Python** (Flask or FastAPI)
+- **Python**
+- **Flask**
 - **Plaid API**
 - **Notion API**
 - **OpenAI or Azure OpenAI**
-- Optional: Streamlit for UI
+- 
 
 ## Installation (Coming Soon)
 
