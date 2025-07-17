@@ -21,7 +21,6 @@ This project is my final submission for [CS50x](https://cs50.harvard.edu/x/), Ha
 - **Plaid API**
 - **Notion API**
 - **OpenAI or Azure OpenAI**
-- 
 
 ## Installation (Coming Soon)
 
