@@ -1,0 +1,74 @@
+# Byte-compiled / cache / logs
+__pycache__/
+*.py[cod]
+*$py.class
+*.log
+
+# Virtual environments
+.venv/
+venv/
+env/
+ENV/
+env.bak/
+venv.bak/
+
+# Environment variables
+.env
+.envrc
+
+# Test & coverage
+.pytest_cache/
+.coverage
+.tox/
+.nox/
+.hypothesis/
+htmlcov/
+.coverage.*
+
+# Editor folders
+.vscode/
+.idea/
+.spyderproject
+.spyproject
+.ropeproject
+
+# Jupyter
+.ipynb_checkpoints
+
+# Mypy / Ruff / Type checkers
+.mypy_cache/
+.pytype/
+.ruff_cache/
+.dmypy.json
+.pyre/
+
+# Build artifacts
+build/
+dist/
+.eggs/
+*.egg-info/
+*.egg
+MANIFEST
+
+# PyInstaller
+*.spec
+
+# Documentation
+site/
+docs/_build/
+
+# Django / Flask
+instance/
+*.sqlite3
+db.sqlite3
+webassets-cache
+
+# Misc tools
+.pdm-python/
+.pdm-build/
+.pypirc
+.cursorignore
+.cursorindexingignore
+.abstra/
+integrations/notion-sdk/
+integrations/plaid/
