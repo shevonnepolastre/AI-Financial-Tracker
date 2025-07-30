@@ -1,0 +1,10 @@
+#databaseForm {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  max-width: 300px;
+}
+#dbResponse {
+  padding: 10px;
+  color: #333;
+}

@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Income Tracker Form</title>
+  <link rel="stylesheet" href="/style.css" />
+  <script src="notion-sdk/client.js" defer><notion-sdk/script>
+</head>
+<body>
+  <main>
+    <h2>Add Income Entry</h2>
+    <form id="incomeForm">
+      <label for="source">Income Source:</label>
+      <input type="text" id="source" name="source" required />
+
+      <label for="amount">Amount:</label>
+      <input type="number" id="amount" name="amount" step="0.01" required />
+
+      <label for="date">Date Received:</label>
+      <input type="date" id="date" name="date" required />
+
+      <label for="category">Category:</label>
+      <select id="category" name="category">
+        <option value="Salary">Salary</option>
+        <option value="Investment">Investment</option>
+        <option value="Side Hustle">Side Hustle</option>
+      </select>
+
+      <label for="recurring">Recurring:</label>
+      <input type="checkbox" id="recurring" name="recurring" />
+
+      <label for="frequency">Frequency:</label>
+      <select id="frequency" name="frequency">
+        <option value="Monthly">Monthly</option>
+        <option value="Quarterly">Quarterly</option>
+        <option value="Irregular">Irregular</option>
+      </select>
+
+      <label for="account">Account:</label>
+      <select id="account" name="account">
+        <option value="Checking">Checking</option>
+        <option value="Investment">Investment</option>
+        <option value="PayPal">PayPal</option>
+      </select>
+
+      <label for="budget">Budget Allocation (%):</label>
+      <input type="text" id="budget" name="budget" />
+
+      <input type="submit" value="Submit" />
+    </form>
+  </main>
+</body>
+</html>
