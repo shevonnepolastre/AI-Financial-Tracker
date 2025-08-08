@@ -2,16 +2,12 @@ from dotenv import load_dotenv
 import os
 from datetime import date
 
-from .budget_categories import Categories
-from .transactions import Transactions
-
-from .notion_trans import add_to_notion
+from budget_categories import Categories
+from transactions import Transactions
 
 
 def main():
-    from pathlib import Path
-    load_dotenv(dotenv_path=Path("config/.env"))
-
+    load_dotenv("config/.env")
     categories = Categories()
     transactions = Transactions()
 
@@ -26,7 +22,7 @@ def main():
             if categories.is_income_category(inc_cat):
                 result = transactions.add_income(inc_cat)
                 if result:
-                    add_to_notion(inc_cat, "", result[1], date.today())
+                    add_to_notion(inc_cat, "", result[1], date.today(), entry_type="income")
         
         elif trans_selec == 'expense':
             exp_cat = input("What is your expense category? :").strip().lower()
@@ -34,7 +30,7 @@ def main():
             if categories.is_expense_category(exp_cat, subcat):
                 result = transactions.add_expense(exp_cat)
                 if result:
-                    add_to_notion(exp_cat, subcat, result[1], date.today())
+                    add_to_notion(exp_cat, subcat, result[1], date.today(), entry_type="expense")
 
         else:
             print("Please enter 'income', 'expense', or 'exit'.")
