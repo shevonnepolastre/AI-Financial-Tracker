@@ -12,7 +12,7 @@ def main():
     transactions = Transactions()
 
     while True:
-        trans_selec = input("Do you want to add income or expense? (or type 'exit' to quit): ").strip().lower()
+        trans_selec = input("Do you want to add income or expeåçnse? (or type 'exit' to quit): ").strip().lower()
 
         if trans_selec == 'exit':
             break
