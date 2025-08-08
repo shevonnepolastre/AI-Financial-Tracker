@@ -1,4 +1,4 @@
-from budget_categories import Categories
+from .budget_categories import Categories
 
 from collections import defaultdict
 
