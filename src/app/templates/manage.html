@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Manage Budgets & Categories</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+  <div class="container">
+    <h1>Manage Budgets & Categories</h1>
+
+    <a href="{{ url_for('dashboard') }}" class="back-link">← Back to Dashboard</a>
+
+    <!-- ================== Flash Messages ================== -->
+    {% with messages = get_flashed_messages() %}
+      {% if messages %}
+        <div class="flash-container">
+          {% for msg in messages %}
+            <div class="flash">{{ msg }}</div>
+          {% endfor %}
+        </div>
+      {% endif %}
+    {% endwith %}
+
+    <!-- ================== Budget Update ================== -->
+    <h2>Set / Update Budget</h2>
+    <form action="{{ url_for('update_budget') }}" method="post">
+      <select name="category" required>
+        {% for cat, subs in expense_categories.items() %}
+          <option value="{{ cat }}">{{ cat.title() }}</option>
+          {% for sub in subs %}
+            <option value="{{ sub }}">-- {{ sub.title() }}</option>
+          {% endfor %}
+        {% endfor %}
+      </select>
+      <input type="number" step="0.01" name="amount" placeholder="Budget Amount" required>
+      <button type="submit">Update Budget</button>
+    </form>
+
+    <!-- ================== Add Category ================== -->
+    <h2>Add Category</h2>
+    <form action="{{ url_for('add_category') }}" method="post">
+      <label>Type:</label>
+      <select name="type" required>
+        <option value="income">Income</option>
+        <option value="expense">Expense</option>
+      </select>
+
+      <label>Category:</label>
+      <input type="text" name="category" placeholder="e.g. House" required>
+
+      <label>Subcategory (optional):</label>
+      <input type="text" name="subcategory" placeholder="e.g. Lawn Care">
+
+      <button type="submit">Add</button>
+    </form>
+  </div>
+</body>
+</html>

@@ -1,40 +1,72 @@
-from dotenv import load_dotenv
 import os
-from datetime import date
+from notion_client import Client
+from dotenv import load_dotenv
+from pathlib import Path
 
-from budget_categories import Categories
-from transactions import Transactions
+load_dotenv()  
 
+NOTION_TOKEN = os.getenv("NOTION_API_KEY")
+INCOME_DB_ID = os.getenv("NOTION_INCOME_DB_ID")
+EXPENSE_DB_ID = os.getenv("NOTION_EXPENSE_DB_ID")
 
-def main():
-    load_dotenv("config/.env")
-    categories = Categories()
-    transactions = Transactions()
+notion = Client(auth=NOTION_TOKEN)
 
-    while True:
-        trans_selec = input("Do you want to add income or expeåçnse? (or type 'exit' to quit): ").strip().lower()
+def create_income_page(category, amount, date_added, description="Income"):
+    payload = {
+        "parent": {"database_id": INCOME_DB_ID},
+        "properties": {
+            "Income Name": {
+                "title": [
+                    {"text": {"content": description or category.title()}}
+                ]
+            },
+            "Category": {
+                "select": {"name": category.title()}
+            },
+            "Amount": {
+                "number": float(amount)
+            },
+            "Date Received": {
+                "date": {"start": date_added.strftime("%Y-%m-%d")}
+            }
+        }
+    }
 
-        if trans_selec == 'exit':
-            break
+    try:
+        return notion.pages.create(**payload)
+    except Exception as e:
+        print(f"[ERROR] Failed to log income to Notion: {e}")
+        return None
 
-        if trans_selec == 'income':
-            inc_cat = input("What is your income category? :").strip().lower()
-            if categories.is_income_category(inc_cat):
-                result = transactions.add_income(inc_cat)
-                if result:
-                    add_to_notion(inc_cat, "", result[1], date.today(), entry_type="income")
-        
-        elif trans_selec == 'expense':
-            exp_cat = input("What is your expense category? :").strip().lower()
-            subcat = input(f"Enter subcategory for '{exp_cat}' (or press Enter to skip): ").strip().lower()
-            if categories.is_expense_category(exp_cat, subcat):
-                result = transactions.add_expense(exp_cat)
-                if result:
-                    add_to_notion(exp_cat, subcat, result[1], date.today(), entry_type="expense")
+def create_expense_page(category, subcategory, amount, date_added, description="Expense"):
+    payload = {
+        "parent": {"database_id": EXPENSE_DB_ID},
+        "properties": {
+            "Expense": {
+                "title": [
+                    {"text": {"content": description or category.title()}}
+                ]
+            },
+            "Category": {
+                "select": {"name": category.title()}
+            },
+            "Subcategory": {
+                "select": {"name": subcategory.title()} if subcategory else None
+            },
+            "Actual": {
+                "number": float(amount)
+            },
+            "Date": {
+                "date": {"start": date_added.strftime("%Y-%m-%d")}
+            }
+        }
+    }
 
-        else:
-            print("Please enter 'income', 'expense', or 'exit'.")
+    # Remove empty properties (e.g. no subcategory)
+    payload["properties"] = {k: v for k, v in payload["properties"].items() if v is not None}
 
-
-if __name__ == "__main__":
-    main()
+    try:
+        return notion.pages.create(**payload)
+    except Exception as e:
+        print(f"[ERROR] Failed to log expense to Notion: {e}")
+        return None

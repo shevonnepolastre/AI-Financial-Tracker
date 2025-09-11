@@ -1,0 +1,31 @@
+{
+  "income_cat": [
+    "paychecks",
+    "refunds",
+    "rollover",
+    "other",
+    "bonus",
+    "investment",
+    "rental income",
+    "side hustle",
+    "transfer"
+  ],
+  "expense_cat": {
+    "house": ["mortgage", "property tax", "repairs", "lawn care", "cleaning", "pest control"],
+    "utilities": ["electric", "water", "gas", "internet", "streaming service", "mobile"],
+    "food": ["groceries", "dining out"],
+    "auto": ["gas", "maintenance", "insurance"],
+    "insurance": ["health", "life"],
+    "savings": ["emergency fund", "home improvement fund", "retirement fund", "investments", "education fund", "other"],
+    "entertainment": [],
+    "shopping": [],
+    "education": [],
+    "taxes": [],
+    "credit card repayment": [],
+    "loan repayment": [],
+    "child expenses": ["tuition", "activities", "clothing", "health"],
+    "personal care": [],
+    "vacation": [],
+    "miscellaneous": []
+  }
+}

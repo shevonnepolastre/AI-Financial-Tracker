@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Finance Dashboard</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+  <div class="container">
+    <h1>Finance Dashboard</h1>
+
+    <!-- Settings Link -->
+    <a href="{{ url_for('manage') }}" class="settings-link">⚙ Manage Budgets & Categories</a>
+
+    <!-- ================== Flash Messages ================== -->
+    {% with messages = get_flashed_messages() %}
+      {% if messages %}
+        <div class="flash-container">
+          {% for msg in messages %}
+            <div class="flash">{{ msg }}</div>
+          {% endfor %}
+        </div>
+      {% endif %}
+    {% endwith %}
+
+    <!-- ================== Forms ================== -->
+    <div class="forms">
+      <!-- Income Form -->
+      <form action="{{ url_for('add_income') }}" method="post">
+        <h2>Income</h2>
+        <select name="category" required>
+          {% for cat in income_categories %}
+            <option value="{{ cat }}">{{ cat.title() }}</option>
+          {% endfor %}
+        </select>
+        <input type="number" step="0.01" name="amount" placeholder="Amount" required>
+        <button type="submit" class="income-btn">Add Income</button>
+      </form>
+
+      <!-- Expense Form -->
+      <form action="{{ url_for('add_expense') }}" method="post">
+        <h2>Expenses</h2>
+        <select name="category" id="category-select" required>
+          {% for cat, subs in expense_categories.items() %}
+            <option value="{{ cat }}">{{ cat.title() }}</option>
+          {% endfor %}
+        </select>
+
+        <select name="subcategory" id="subcategory-select">
+          <option value="">-- None --</option>
+        </select>
+
+        <input type="number" step="0.01" name="amount" placeholder="Amount" required>
+        <button type="submit" class="expense-btn">Add Expense</button>
+      </form>
+    </div>
+
+      <!-- ================== CSV Upload ================== -->
+    <h2>Upload Bank CSV</h2>
+    <form action="{{ url_for('upload_csv') }}" method="post" enctype="multipart/form-data">
+      <input type="file" name="file" accept=".csv" required>
+      <button type="submit">Upload</button>
+    </form>
+
+    <!-- ================== Income Summary ================== -->
+    <h2>Income Summary</h2>
+    <table>
+      <tr>
+        <th>Category</th>
+        <th>Description</th>
+        <th>Amount</th>
+        <th>Date</th>
+      </tr>
+      {% for row in income_summary %}
+      <tr>
+        <td>{{ row.category }}</td>
+        <td>{{ row.description }}</td>
+        <td>${{ row.amount }}</td>
+        <td>{{ row.date }}</td>
+      </tr>
+      {% endfor %}
+    </table>
+
+    <!-- ================== Expense Summary ================== -->
+    <h2>Expense Summary</h2>
+    <table>
+      <tr>
+        <th>Category</th>
+        <th>Subcategory</th>
+        <th>Description</th>
+        <th>Spent</th>
+        <th>Budget</th>
+        <th>Status</th>
+        <th>Date</th>
+      </tr>
+      {% for row in expense_summary %}
+      <tr>
+        <td>{{ row.category }}</td>
+        <td>{{ row.subcategory if row.subcategory else "-" }}</td>
+        <td>{{ row.description if row.description else "-" }}</td>
+        <td>${{ row.spent }}</td>
+        <td>${{ row.budget }}</td>
+        <td>
+          {% if row.status == "Over Budget" %}
+            <span class="over">{{ row.status }}</span>
+          {% else %}
+            <span class="ok">{{ row.status }}</span>
+          {% endif %}
+        </td>
+        <td>{{ row.date }}</td>
+      </tr>
+      {% endfor %}
+    </table>
+  </div>
+
+  <!-- ================== JavaScript for subcategories ================== -->
+  <script>
+    const expenseCategories = {{ expense_categories | tojson }};
+    const categorySelect = document.getElementById("category-select");
+    const subcategorySelect = document.getElementById("subcategory-select");
+
+    function updateSubcategories() {
+      const selected = categorySelect.value;
+      const subs = expenseCategories[selected] || [];
+      subcategorySelect.innerHTML = '<option value="">-- None --</option>';
+      subs.forEach(sub => {
+        const opt = document.createElement("option");
+        opt.value = sub;
+        opt.textContent = sub.charAt(0).toUpperCase() + sub.slice(1);
+        subcategorySelect.appendChild(opt);
+      });
+    }
+
+    categorySelect.addEventListener("change", updateSubcategories);
+    updateSubcategories();
+  </script>
+</body>
+</html>
