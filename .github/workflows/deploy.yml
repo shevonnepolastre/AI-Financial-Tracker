@@ -1,0 +1,41 @@
+name: Deploy Financial App with Flask and Notion
+
+on:
+  push:
+    branches: [main]
+
+jobs:
+  deploy:
+    runs-on: self-hosted
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.x'
+      
+      - name: Install dependencies
+        run: |
+          python -m venv venv
+          source venv/bin/activate
+          pip install -r requirements.txt
+
+      - name: Run Waitress with auto-shutdown (30 min)
+        run: |
+          source venv/bin/activate
+          timeout 1800 waitress-serve --host=127.0.0.1 --port=8000 run:create_app
+        env:
+          NOTION_API_KEY: ${{ secrets.NOTION_API_KEY }}
+          NOTION_INCOME_DB_ID: ${{ secrets.NOTION_INCOME_DB_ID }}
+          NOTION_EXPENSE_DB_ID: ${{ secrets.NOTION_EXPENSE_DB_ID }}
+          FLASK_ENV: production
+          FLASK_APP: run.py
+
+      - name: Check for large files
+        run: |
+          maxsize=50M
+          if git ls-files --cached | xargs -I {} du -h {} | awk -v limit=$maxsize '$1+0 > limit {print "❌ Too big: " $2 " (" $1 ")"; exit 1}'; then
+            echo "✅ All files are within size limits"
+          fi
