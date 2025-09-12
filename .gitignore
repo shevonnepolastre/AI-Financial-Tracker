@@ -72,3 +72,7 @@ webassets-cache
 .abstra/
 integrations/notion-sdk/
 integrations/plaid/
+
+# Runner files
+actions-runner/
+*.tar.gz
